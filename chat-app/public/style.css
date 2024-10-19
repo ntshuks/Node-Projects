@@ -1,0 +1,11 @@
+#message {
+    width: 80%;
+    position: fixed;
+    bottom:50px;
+    
+}
+
+.messagesend {
+    position: fixed;
+    bottom:10px;
+}

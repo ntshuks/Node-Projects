@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="shortcut icon" href="#">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+    <title>Chat App</title>
+</head>
+<body>
+  <div>
+    <form id="join" name="join" method="post" style="display: inline;">
+      <input type="text" id="username" placeholder="Enter Username" maxlength="10" pattern="[A-za-z0-9]+" required>
+      <input type="email" placeholder="Enter Email"
+      pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+      id="email" required>
+      <label for="room">Choose a Room</label>
+      <select id="room" required>
+        <option value="holder" selected disabled></option>
+        <option value="alpha">Alpha</opton>
+        <option value="beta">Beta</option>
+        <option value="gamma">Gamma</option>
+        <option value="delta">Delta</option>
+      </select>
+      <button type="submit">Join</button>
+    </form>
+    <form id="leave" name="leave" style="display: inline;">
+      <button type="submit">Leave</button>
+    </form>
+  </div>
+    
+    <!-- Div to contain all messages-->
+    <div id="messagearea">
+      <h4>Just To See</h4>
+    </div>
+    <!-- <div id="messageinput">  -->
+     <form id="messageform" name="massageform" method="post>">
+      <input name="message" id="message" type="text" placeholder="Enter Message">
+      <button class="messagesend" type="submit">Send Message</button>  
+     </form>
+    <!-- </div> -->
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>
