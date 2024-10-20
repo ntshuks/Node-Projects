@@ -33,7 +33,7 @@ app.post('/', (req,res) => {
   
 // Socket io logic
 io.on('connection', (socket) => {
-    console.log(socket.id);
+   // console.log(socket.id);
     const id = socket.id;
     socket.on("joinroom",({username,email,room}) => {
         // Check to see if user already joing - reject if so
@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
         socket.join(newuser.room);
         const welcomemsg = `INFO:: Welcome to the ${room} Room`;
         const roommessage = `INFO:: ${username} has joined the chat in ${room}`;
+        console.log("User List after a join event");
         console.log(userlist);
         socket.broadcast.to(room).emit("joiner", roommessage);
         socket.emit("welcome", welcomemsg) }
@@ -64,9 +65,9 @@ io.on('connection', (socket) => {
         } else {
             console.log("user to leave found");
             //removeUser(result);
-            const index = leaver.username;
+            const index = findUserIndex(leaver.id);
             userlist.splice(index,1);
-            console.log("User List Follows");
+            console.log("User List after manual leave");
             console.log(userlist);
             // Let other users know user has left
             const leavemessage = `INFO:: User ${leaver.username} has manually left the room`
@@ -78,9 +79,6 @@ io.on('connection', (socket) => {
     socket.on("sendmessage", ({message,username}) => {
         // get current user
         const currentuser = findUser2(username);
-        console.log("username:" + username)
-        console.log("Current User");
-        console.log(currentuser);
         // If no current user, throw alert error
         if(!currentuser) {
             const messageerror="You need to be in room to send messages";
@@ -95,16 +93,21 @@ io.on('connection', (socket) => {
 
     socket.on("disconnect", () => {
         // find user in userlist, remove and tell other room users
-        const result = findUser(socket.id);
+        console.log("socket that has disconnected: " + socket.id);
+        const index = findUserIndex(socket.id);
+        const user = findUser(socket.id);
+        console.log("print out index of user to be removed");
+        console.log(index);
         // remove user
-        if (result) {
-            const index = result.id;
+        if (index !== -1) {
+            console.log('INDEX to be spliced');
+            console.log(index);
             userlist.splice(index,1);
-            console.log("User List Follows");
+            console.log("User List after splice");
             console.log(userlist);
             // Let other users know user has left
-            const leavemessage = `INFO:: User ${result.username} connection reset`
-            io.to(result.room).emit("leaver", leavemessage);
+            const leavemessage = `INFO:: User ${user.username} connection reset`
+            io.to(user.room).emit("leaver", leavemessage);
         }
         console.log(`User disconnected, socket.id: ${socket.id}`);
     });
@@ -114,26 +117,22 @@ io.on('connection', (socket) => {
 function findUser(id) {
     // Fuction can search using any property
     const searchObj = userlist.find((user) => user.id === id);
-    console.log('From function');
-    console.log(` SearchObj = ${searchObj}`);
+    //console.log('From function');
+    //console.log(` SearchObj = ${searchObj}`);
     return (searchObj);
 }
 
 function findUser2(username) {
     // Fuction can search using any property
     const searchObj = userlist.find((user) => user.username === username);
-   // console.log('From function');
-    //console.log(` SearchObj = ${searchObj}`);
+    console.log('From function');
+    console.log(` SearchObj = ${searchObj}`);
     return (searchObj);
 }
 
-function removeUser(user) {
-    const index = user.id;
-            userlist.splice(index,1);
-            console.log(userlist);
-            // Let other users know user has left
-            const leavemessage = `INFO:: User ${result.username} has left the room`
-            io.to(result.room).emit("leaver", leavemessage);
+function findUserIndex(id) {
+    const index = userlist.findIndex((user) => user.id === id);
+    return(index);
 }
 
 server.listen(PORT, () => {

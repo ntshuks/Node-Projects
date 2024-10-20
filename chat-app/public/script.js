@@ -37,9 +37,13 @@ leave.addEventListener('submit', (e) => {
 messageform.addEventListener('submit', (e) => {
    e.preventDefault();
    const message= messageInput.value;
+   // Make sure there is a message
+   if(!message) {
+    alert("Please create a message before submitting");
+   } else {
    socket.emit("sendmessage", {message,username});
    // Now clear the input field
-   messageInput.value = "";
+   messageInput.value = ""; }
 });
 
 socket.on('welcome', (welcomemsg) => {
