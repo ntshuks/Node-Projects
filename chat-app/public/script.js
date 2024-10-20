@@ -9,10 +9,11 @@ const roomInput = document.getElementById('room');
 const messageform = document.getElementById('messageform');
 const messageInput = document.getElementById('message');
 const messageArea = document.getElementById("messagearea");
-// Declare username & room with let to extend its scope
+const roomuserlist = document.getElementById("roomuserlist");
+// Declare username & room with let to extend scope
 let username;
 let room;
-let RoomJoined;
+let roomusers;
 
 // Event Listener for join form submit
 join.addEventListener('submit', (e) => {
@@ -23,7 +24,6 @@ join.addEventListener('submit', (e) => {
     const email = emailInput.value;
     room = roomInput.value;
     //create joinroom event to be sent to back end
-    console.log(username, email, room);
     socket.emit("joinroom", {username, email, room});
 });
 
@@ -48,12 +48,29 @@ messageform.addEventListener('submit', (e) => {
 
 socket.on('welcome', (welcomemsg) => {
     AddContent(welcomemsg);
-    // Set HAsjoiend to True
-    RoomJoined = room;
+    // console.log("List of users in room " + room);
+    // console.log(usernamesinroom);
+    // roomusers = usernamesinroom;
+    // // display room user list
+});
+
+socket.on("updateroomlist", (usernamesinroom) => {
+    roomusers = usernamesinroom;
+    console.log(roomusers);
+    //clear list before re populating
+    roomuserlist.innerText='';
+    for (i=0 ; i < roomusers.length ; i++) {
+        let item = document.createElement('li');
+         item.textContent = roomusers[i];
+         roomuserlist.appendChild(item);
+    }
+    const item = document.createElement('li');
 });
 
 socket.on('joiner', (roommessage) => {
+    // Letting other room users know of new joiner
     AddContent(roommessage);
+    //roomusers = usernamesinroom;
 });
 
 socket.on('sendmessage', (user_message) => {
@@ -62,14 +79,11 @@ socket.on('sendmessage', (user_message) => {
 
 socket.on("leaver", (leavemessage) => {
     AddContent(leavemessage);
+   // roomusers = usernamesinroom;
 });
 
 socket.on("byebye", (username) => {
-    // DOn't reload the page, just empty input boxes and messages 
-    // usernameInput.value = "";
-    // emailInput.value = "";
-    // roomInput.value="holder";
-    // messageArea.innerHTML = '';
+  // Relaod page after user manually leaves
      location.reload();
 });
 
