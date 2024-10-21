@@ -1,14 +1,34 @@
-#message {
-    width: 80%;
+.main {
+    display: flex;
+    flex-direction: row;
     position: fixed;
-    bottom:50px;
-    
+    top: 0;
 }
 
-.messagesend {
+
+
+#messageform {
+   /* background: #6699ff; */
+   display: flex;
+   box-sizing: border-box;
     position: fixed;
-    bottom:10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
+
+#message {
+    background: #b8b894;
+    flex-grow: 1;
+}
+
+#messagesend {
+    background: #6699ff;
+   /* padding: 0 1rem;
+    margin: 0.25rem;
+    border-radius: 3px; */
+}
+
 
 ul.roomuserlist {
     list-style-type: none;

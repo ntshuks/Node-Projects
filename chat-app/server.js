@@ -1,12 +1,10 @@
 /*
 Chat App - using sockt.io
 
-
-
 */
 
 const PORT = process.env.PORT || 5001;
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 const server = require('node:http').createServer(app);
@@ -19,16 +17,16 @@ let userlist = [];
 app.use(express.static('public'));
 
 //Body Parser to allow form data to be accessed
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 app.get('/', (req,res) => {
    res.render(index.html);
 });
 
-app.post('/', (req,res) => {
-   console.log(`User: ${req.body.username} Email: ${req.body.email} Room: ${req.body.room}`);
-});
+// app.post('/', (req,res) => {
+//    console.log(`User: ${req.body.username} Email: ${req.body.email} Room: ${req.body.room}`);
+// });
   
 // Socket io logic
 io.on('connection', (socket) => {
@@ -129,6 +127,8 @@ io.on('connection', (socket) => {
     });
 
 });
+
+// There may be a way to combine find functions to use user.{$variable} === ${variable}
 
 function findUser(id) {
     // search by id

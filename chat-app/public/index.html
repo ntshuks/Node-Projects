@@ -9,6 +9,7 @@
     <title>Chat App</title>
 </head>
 <body>
+  <div class="main">
   <div>
     <form id="join" name="join" method="post" style="display: inline;">
       <input type="text" id="username" placeholder="Enter Username" maxlength="10" pattern="[A-za-z0-9]+" required>
@@ -32,17 +33,20 @@
   <div>
     <ul class="roomuserlist" id="roomuserlist"></ul>
   </div>
+  </div>
+  </body>
     
     <!-- Div to contain all messages-->
     <div id="messagearea">
-      <h4>Just To See</h4>
+      <!--<h4>Just To See</h4> -->
     </div>
-    <!-- <div id="messageinput">  -->
+    <div id="messageinput">
      <form id="messageform" name="massageform" method="post>">
-      <input name="message" id="message" type="text" placeholder="Enter Message">
-      <button class="messagesend" type="submit">Send Message</button>  
+      <input name="message" id="message" type="text" 
+      placeholder="Enter Message (max 500 characters)" maxlength="500">
+      <button id="messagesend">Send Message</button>   
      </form>
-    <!-- </div> -->
+    </div>
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="script.js" defer></script>
 </body>
