@@ -48,10 +48,6 @@ messageform.addEventListener('submit', (e) => {
 
 socket.on('welcome', (welcomemsg) => {
     AddContent(welcomemsg);
-    // console.log("List of users in room " + room);
-    // console.log(usernamesinroom);
-    // roomusers = usernamesinroom;
-    // // display room user list
 });
 
 socket.on("updateroomlist", (usernamesinroom) => {
@@ -59,12 +55,14 @@ socket.on("updateroomlist", (usernamesinroom) => {
     console.log(roomusers);
     //clear list before re populating
     roomuserlist.innerText='';
+    let item = document.createElement('li');
+    item.textContent = `Users in ${room}: `;
+    roomuserlist.appendChild(item);
     for (i=0 ; i < roomusers.length ; i++) {
-        let item = document.createElement('li');
+        item = document.createElement('li');
          item.textContent = roomusers[i];
          roomuserlist.appendChild(item);
     }
-    const item = document.createElement('li');
 });
 
 socket.on('joiner', (roommessage) => {
